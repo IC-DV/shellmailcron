@@ -1,0 +1,13 @@
+#!/bin/bash
+
+LOCKFILE=/var/log/nginx/mail.sh
+if [ -f $LOCKFILE ]
+then
+  echo "lockfile active"
+  exit 1 
+else
+  echo "PID: $$" > $LOCKFILE
+  trap 'rm -f $LOCKFILE"; exit $?' INT TERM EXIT
+  rm -f $LOCKFILE
+  trap - INT TERM EXIT
+fi
